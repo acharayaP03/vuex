@@ -1,8 +1,8 @@
 {
-  "name": "codingexplained-vuex",
+  "name": "vuexapp",
   "description": "A Vue.js project",
   "version": "1.0.0",
-  "author": "Bo Andersen <info@codingexplained.com>",
+  "author": "Trishten Ac",
   "private": true,
   "scripts": {
     "dev": "concurrently --kill-others \"npm run dev-server\" \"npm run backend-server\"",

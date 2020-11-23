@@ -2,7 +2,14 @@
     <div id="products" class="row list-group">
         <div v-for="product in products" class="item col-xs-4">
             <div class="thumbnail">
-                <img @click="clickedImage(product)" class="group list-group-image" src="http://placehold.it/400x250/000/fff">
+                <router-link
+                        :to="{ name: 'viewProduct', params: { productId: product.id } }"
+                        tag="img"
+                        class="group inner list-group-item-heading"
+                        src="http://placehold.it/400x250/000/fff">
+
+                </router-link>
+
                 <div class="caption">
                     <router-link
                             :to="{ name: 'viewProduct', params: { productId: product.id } }"
@@ -33,13 +40,24 @@
 </template>
 
 <script>
-    import { eventBus } from './main';
-
     export default {
         data() {
             return {
                 products: []
             };
+        },
+        computed:{
+            cart(){
+                return this.$store.state.cart;
+            },
+            cartTotal: {
+                get : function(){
+                    return this.$store.state.cartTotal
+                },
+                set : function(value){
+                    this.$store.state.cartTotal = value;
+                }
+            }
         },
         created() {
             this.$http.get('products')
@@ -48,7 +66,7 @@
                         return response.json();
                     },
                     response => {
-                        alert("error");
+                        alert("Could not fetch products!");
                     }
                 )
                 .then(products => {
@@ -57,18 +75,26 @@
         },
         methods: {
             addProductToCart(product, quantity) {
-                eventBus.$emit('addItemToCart', {
-                    product: product,
-                    quantity: quantity
-                });
+                // TODO: Implement
+                let cartItem = this.getCartItem(product);
+                if (cartItem !==null){
+                    cartItem.quantity += quantity;
+                }else{
+                    this.cart.items.push({
+                        product,
+                        quantity
+                    })
+                }
+                product.inStock -= quantity;
+                this.cartTotal += product.price * quantity;
             },
-            clickedImage(product) {
-                this.$router.push({
-                    name: 'viewProduct',
-                    params: {
-                        productId: product.id
+            getCartItem(product){
+                for(let i= 0; i< this.cart.items.length; i++){
+                    if(this.cart.items[i].product.id === product.id){
+                        return this.cart.items[i];
                     }
-                });
+                }
+                return null;
             }
         }
     }

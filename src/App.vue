@@ -16,15 +16,9 @@
                             <a>Cart</a>
                         </router-link>
                     </ul>
+
                     <div class="nav navbar-nav navbar-right">
                         <div class="stats">{{ cart.items.length }} <template v-if="cart.items.length == 1">item</template><template v-else>items</template> in cart, totalling {{ cartTotal | currency }}</div>
-
-                        <div style="margin-top: 8px;">
-                            <router-link :to="{ name: 'viewProfile' }">My Profile</router-link>
-                            &nbsp;
-                            <button v-if="auth.isLoggedIn" class="btn btn-primary" @click="auth.isLoggedIn = false">Log out</button>
-                            <button v-else class="btn btn-primary" @click="auth.isLoggedIn = true">Log in</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -34,30 +28,21 @@
                 enter-active-class="animated fadeInRight"
                 leave-active-class="animated fadeOutLeft"
                 mode="out-in">
-            <router-view :cart="cart"></router-view>
+            <router-view></router-view>
         </transition>
     </div>
 </template>
 
 <script>
-    import { eventBus } from './main';
-    import CartMixin from './mixins/cart';
-    import { authService } from './main';
-
     export default {
-        mixins: [ CartMixin ],
-        data() {
-            return {
-                cart: {
-                    items: []
-                },
-                auth: authService
-            };
-        },
-        created() {
-            eventBus.$on('addItemToCart', (data) => {
-                this.addProductToCart(data.product, data.quantity);
-            });
+        // TODO: Access cart items and cart total
+        computed:{
+            cart(){
+                return this.$store.state.cart;
+            },
+            cartTotal(){
+                return this.$store.state.cartTotal;
+            }
         }
     }
 </script>

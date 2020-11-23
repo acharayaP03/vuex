@@ -1,6 +1,7 @@
 <template>
     <div>
         <button class="btn btn-primary" @click="goBack">&laquo; Back</button>
+        <button class="btn btn-success" @click="addProductToCart">&laquo; Add product </button>
 
         <div v-if="product != null">
             <h1>{{ product.name }}</h1>
@@ -66,21 +67,23 @@
                     text: '',
                     rating: 0,
                     reviewer: ''
-                },
-                reviewResource: null
-            };
-        },
-        created() {
-            let customActions = {
-                softDelete: {
-                    method: 'DELETE',
-                    url: 'products/{productId}/reviews/{reviewId}?soft=true'
                 }
             };
-
-            let url = 'products/{productId}/reviews/{reviewId}';
-            this.reviewResource = this.$resource(url, {}, customActions);
-
+        },
+        computed:{
+            cart(){
+                return this.$store.state.cart;
+            },
+            cartTotal:{
+                get: function(){
+                    return this.$store.state.cartTotal;
+                },
+                set: function(value){
+                    this.$store.state.cartTotal = value;
+                }
+            }
+        },
+        created() {
             this.getProduct(this.productId)
                 .then(product => this.product = product);
         },
@@ -105,28 +108,32 @@
                 this.$router.history.go(-1);
             },
             addNewReview(review) {
-                this.$http.post('products/{productId}/reviews', review, {
-                    params: {
-                        productId: this.product.id
-                    }
-                }).then(
-                    response => response.json(),
-                    response => alert("Could not add review!")
-                ).then(newReview => this.product.reviews.push(newReview));
+                // TODO: Implement
             },
             deleteReview(review) {
-                //this.reviewResource.delete({
-                this.reviewResource.softDelete({
-                    productId: this.product.id,
-                    reviewId: review.id
-                }).then(
-                    response => {
-                        // Just be lazy and fetch product again
-                        this.getProduct(this.product.id)
-                            .then(product => this.product = product);
-                    },
-                    response => alert("Could not delete review!")
-                );
+                // TODO: Implement
+            },
+             addProductToCart() {
+                // TODO: Implement
+                let cartItem = this.getCartItem(this.product);
+                if (cartItem !==null){
+                    cartItem.quantity++;
+                }else{
+                    this.cart.items.push({
+                        product: this.product,
+                        quantity: 1
+                    })
+                }
+                this.product.inStock--;
+                this.cartTotal += this.product.price;
+            },
+            getCartItem(product){
+                for(let i= 0; i< this.cart.items.length; i++){
+                    if(this.cart.items[i].product.id === product.id){
+                        return this.cart.items[i];
+                    }
+                }
+                return null;
             }
         }
     }

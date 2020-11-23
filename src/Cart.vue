@@ -58,18 +58,21 @@
 </template>
 
 <script>
-    import CartMixin from './mixins/cart';
-
     export default {
-        props: ['cart'],
-        mixins: [ CartMixin ],
+        // TODO: Access cart items, cart total, and tax amount
+
+        // TODO: Implement increaseQuantity method
+
+        // TODO: Implement decreaseQuantity method
+
+        // TODO: Implement checkout method
+
         beforeRouteLeave(to, from, next) {
             if (this.cart.items.length > 0) {
-                if (!confirm('Are you sure you don\'t want to buy these products?')) {
+                if (!confirm('Are you sure you don\'t want to buy these amazing products?')) {
                     return next(false);
                 }
             }
-
             next();
         }
     }

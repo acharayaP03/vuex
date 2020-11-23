@@ -49,14 +49,6 @@
         computed:{
             cart(){
                 return this.$store.state.cart;
-            },
-            cartTotal: {
-                get : function(){
-                    return this.$store.state.cartTotal
-                },
-                set : function(value){
-                    this.$store.state.cartTotal = value;
-                }
             }
         },
         created() {
@@ -86,7 +78,6 @@
                     })
                 }
                 product.inStock -= quantity;
-                this.cartTotal += product.price * quantity;
             },
             getCartItem(product){
                 for(let i= 0; i< this.cart.items.length; i++){

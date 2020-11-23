@@ -68,7 +68,7 @@
                 return this.$store.state.cart;
             },
             taxAnount(){
-                return this.$store.state.taxAmount;
+                return this.$store.state.taxAmount(10);
             }
         },
 

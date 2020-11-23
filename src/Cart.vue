@@ -60,6 +60,17 @@
 <script>
     export default {
         // TODO: Access cart items, cart total, and tax amount
+        computed:{
+            cartTotal(){
+                return this.$store.state.cartTotal;
+            },
+            cart(){
+                return this.$store.state.cart;
+            },
+            taxAnount(){
+                return this.$store.state.taxAmount;
+            }
+        },
 
         // TODO: Implement increaseQuantity method
 

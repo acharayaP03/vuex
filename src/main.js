@@ -55,6 +55,9 @@ const store = new Vuex.Store({
             })
 
             return total;
+        },
+        taxAmount(state, getters){
+            return ((getters.cartTotal * 10)/ 100)
         }
     }
 })

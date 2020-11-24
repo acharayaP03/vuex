@@ -106,26 +106,12 @@ import { ADD_PORDUCT_TO_CART } from "./mutations-types";
             deleteReview(review) {
                 // TODO: Implement
             },
-             [ADD_PORDUCT_TO_CART]() {
+             [ADD_PORDUCT_TO_CART](product, quantity) {
                 // TODO: Implement
-                let cartItem = this.getCartItem(this.product);
-                if (cartItem !==null){
-                    cartItem.quantity++;
-                }else{
-                    this.cart.items.push({
-                        product: this.product,
-                        quantity: 1
-                    })
-                }
-                this.product.inStock--;
-            },
-            getCartItem(product){
-                for(let i= 0; i< this.cart.items.length; i++){
-                    if(this.cart.items[i].product.id === product.id){
-                        return this.cart.items[i];
-                    }
-                }
-                return null;
+                this.$store.dispatch(ADD_PORDUCT_TO_CART, {
+                    product: this.product,
+                    quantity: 1
+                })
             }
         }
     }

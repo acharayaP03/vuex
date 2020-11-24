@@ -67,8 +67,9 @@ import { ADD_PORDUCT_TO_CART } from "./mutations-types";
                 });
         },
         methods:{
+            //replaceing this.$store.commit wth aciton's dispatch.
             [ADD_PORDUCT_TO_CART](product, quantity){
-                this.$store.commit('addProductToCart', {
+                this.$store.dispatch('addProductToCart', {
                     product, 
                     quantity
                 })

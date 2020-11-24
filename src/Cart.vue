@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex';
+
     export default {
         // TODO: Access cart items, cart total, and tax amount
         computed:{
@@ -76,6 +77,17 @@ import { mapGetters } from 'vuex'
         // TODO: Implement decreaseQuantity method
 
         // TODO: Implement checkout method
+        methods:{
+            ...mapMutations([
+                'checkout'
+            ]),
+            addProductToCart(product, quantity){
+                this.$store.commit('addProductToCart', {
+                    product, 
+                    quantity
+                })
+            }
+        },
 
         beforeRouteLeave(to, from, next) {
             if (this.cart.items.length > 0) {

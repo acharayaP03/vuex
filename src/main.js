@@ -60,6 +60,41 @@ const store = new Vuex.Store({
             return function(percentage){
                 return ((getters.cartTotal * percentage)/ 100)
             }
+        },
+        getCartItem:(state) => (product)=>{
+            for(let i= 0; i< state.cart.items.length; i++){
+                if(state.cart.items[i].product.id === product.id){
+                    return state.cart.items[i];
+                }
+            }
+            return null;
+        }
+    },
+    mutations:{
+        checkout(state){
+            state.cart.items.forEach(function(item) {
+                item.product.inStock += item.quantity;
+            });
+            
+            state.cart.items = [];    
+        },
+        addProductToCart(state, payload) {
+            let cartItem = null;
+
+            for(let i= 0; i< state.cart.items.length; i++){
+                if(state.cart.items[i].product.id === payload.product.id){
+                    cartItem = state.cart.items[i];
+                }
+            }
+            if (cartItem !==null){
+                cartItem.quantity += payload.quantity;
+            }else{
+                state.cart.items.push({
+                    product: payload.product,
+                    quantity: payload.quantity
+                })
+            }
+            payload.product.inStock -= payload.quantity;
         }
     }
 })

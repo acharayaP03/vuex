@@ -34,9 +34,13 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
     export default {
         // TODO: Access cart items and cart total
         computed:{
+            ...mapGetters({
+                cartTotal: 'cartTotal'
+            }),
             cart(){
                 return this.$store.state.cart;
             },

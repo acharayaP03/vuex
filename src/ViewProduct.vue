@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { ADD_PORDUCT_TO_CART } from "./mutations-types";
     export default {
         props: {
             productId: {
@@ -105,7 +106,7 @@
             deleteReview(review) {
                 // TODO: Implement
             },
-             addProductToCart() {
+             [ADD_PORDUCT_TO_CART]() {
                 // TODO: Implement
                 let cartItem = this.getCartItem(this.product);
                 if (cartItem !==null){

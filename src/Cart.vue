@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-
+import { CHECKOUT } from "./mutations-types";
     export default {
         // TODO: Access cart items, cart total, and tax amount
         computed:{
@@ -79,7 +79,7 @@ import { mapGetters, mapMutations } from 'vuex';
         // TODO: Implement checkout method
         methods:{
             ...mapMutations([
-                'checkout'
+                CHECKOUT
             ]),
             addProductToCart(product, quantity){
                 this.$store.commit('addProductToCart', {

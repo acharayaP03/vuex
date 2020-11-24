@@ -35,7 +35,7 @@
                     <strong>Taxes</strong>
                 </td>
 
-                <td>{{ taxAmount | currency }}</td>
+                <td>{{ taxAmount(10) | currency }}</td>
             </tr>
 
             <tr>
@@ -43,7 +43,7 @@
                     <strong>Grand total</strong>
                 </td>
 
-                <td>{{ cartTotal + taxAmount | currency }}</td>
+                <td>{{ cartTotal + taxAmount(10) | currency }}</td>
             </tr>
 
             <tr>
@@ -58,17 +58,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
     export default {
         // TODO: Access cart items, cart total, and tax amount
         computed:{
-            cartTotal(){
-                return this.$store.state.cartTotal;
-            },
+            ...mapGetters([
+                'cartTotal',
+                'taxAmount'
+            ]),
             cart(){
                 return this.$store.state.cart;
-            },
-            taxAnount(){
-                return this.$store.state.taxAmount(10);
             }
         },
 

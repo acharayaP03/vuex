@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { ADD_PORDUCT_TO_CART } from "./mutations-types";
     export default {
         data() {
             return {
@@ -66,7 +67,7 @@
                 });
         },
         methods:{
-            addProductToCart(product, quantity){
+            [ADD_PORDUCT_TO_CART](product, quantity){
                 this.$store.commit('addProductToCart', {
                     product, 
                     quantity

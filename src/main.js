@@ -4,6 +4,7 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import { routes } from './routes';
+import {ADD_PORDUCT_TO_CART, CHECKOUT } from './mutations-types'
 
 Vue.filter('currency', function(value) {
     let formatter = new Intl.NumberFormat('en-US', {
@@ -71,14 +72,19 @@ const store = new Vuex.Store({
         }
     },
     mutations:{
-        checkout(state){
+        /**
+         * 
+         * @param dynamically setting mutation types
+         * @types will be replace durin the render.
+         */
+        [CHECKOUT](state){
             state.cart.items.forEach(function(item) {
                 item.product.inStock += item.quantity;
             });
             
             state.cart.items = [];    
         },
-        addProductToCart(state, payload) {
+        [ADD_PORDUCT_TO_CART](state, payload) {
             let cartItem = null;
 
             for(let i= 0; i< state.cart.items.length; i++){

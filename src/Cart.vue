@@ -76,6 +76,13 @@ import { mapGetters } from 'vuex'
         // TODO: Implement decreaseQuantity method
 
         // TODO: Implement checkout method
+        methods:{
+            checkout() {
+                if (confirm('Are you sure that you want to purchase these products?')) {
+                    this.$store.commit('checkout');
+                }
+            },
+        },
 
         beforeRouteLeave(to, from, next) {
             if (this.cart.items.length > 0) {

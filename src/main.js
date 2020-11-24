@@ -61,6 +61,16 @@ const store = new Vuex.Store({
                 return ((getters.cartTotal * percentage)/ 100)
             }
         }
+    },
+    mutations:{
+        checkout: (state) =>{
+            state.cart.items.forEach(function(item) {
+                item.product.inStock += item.quantity;
+            });
+            
+            state.cart.items = [];
+            
+        }
     }
 })
 Vue.http.options.root = 'http://localhost:3000';

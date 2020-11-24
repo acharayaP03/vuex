@@ -71,6 +71,16 @@ const store = new Vuex.Store({
             return null;
         }
     },
+    /**
+     * @usage Use action when there is a need to  async request to the 
+     * @mutation are synchronous, we cannot use it for async such as server request.
+     */
+    actions:{
+        [ADD_PORDUCT_TO_CART](context, payload){
+            context.commit(ADD_PORDUCT_TO_CART, payload)
+        }
+    },
+
     mutations:{
         /**
          * 

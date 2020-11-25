@@ -4,7 +4,7 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import { routes } from './routes';
-import {ADD_PORDUCT_TO_CART, CHECKOUT } from './mutations-types'
+import {ADD_PORDUCT_TO_CART, CHECKOUT, INCREASE_PRODUCT_QUANTITY } from './mutations-types'
 
 Vue.filter('currency', function(value) {
     let formatter = new Intl.NumberFormat('en-US', {
@@ -62,7 +62,7 @@ const store = new Vuex.Store({
                 return ((getters.cartTotal * percentage)/ 100)
             }
         },
-        getCartItem:(state) => (product)=>{
+        getCartItem: (state) => (product)=>{
             for(let i= 0; i< state.cart.items.length; i++){
                 if(state.cart.items[i].product.id === product.id){
                     return state.cart.items[i];
@@ -76,8 +76,15 @@ const store = new Vuex.Store({
      * @mutation are synchronous, we cannot use it for async such as server request.
      */
     actions:{
-        [ADD_PORDUCT_TO_CART](context, payload){
-            context.commit(ADD_PORDUCT_TO_CART, payload)
+        [ADD_PORDUCT_TO_CART]({commit, getters}, payload){
+            let cartItem = getters.getCartItem(payload.product);
+            payload.cartItem = cartItem;
+
+            if(cartItem == null){
+                commit(ADD_PORDUCT_TO_CART, payload)
+            }else{
+                commit(INCREASE_PRODUCT_QUANTITY, payload)
+            }
         }
     },
 
@@ -95,21 +102,20 @@ const store = new Vuex.Store({
             state.cart.items = [];    
         },
         [ADD_PORDUCT_TO_CART](state, payload) {
-            let cartItem = null;
-
-            for(let i= 0; i< state.cart.items.length; i++){
-                if(state.cart.items[i].product.id === payload.product.id){
-                    cartItem = state.cart.items[i];
-                }
-            }
-            if (cartItem !==null){
-                cartItem.quantity += payload.quantity;
+            console.log(payload)
+            if (payload.cartItem !==null){
+                payload.cartItem.quantity += payload.quantity;
             }else{
                 state.cart.items.push({
                     product: payload.product,
                     quantity: payload.quantity
                 })
             }
+            payload.product.inStock -= payload.quantity;
+        },
+        [INCREASE_PRODUCT_QUANTITY](state, payload){
+            console.log(payload)
+            payload.cartItem.quantity += payload.quantity;
             payload.product.inStock -= payload.quantity;
         }
     }

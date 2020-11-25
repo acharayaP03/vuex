@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="btn btn-primary" @click="goBack">&laquo; Back</button>
-        <button class="btn btn-success" @click="addProductToCart">&laquo; Add product </button>
+        <button class="btn btn-success" @click="addProductToCart({product, quantity: 1})">&laquo; Add product </button>
 
         <div v-if="product != null">
             <h1>{{ product.name }}</h1>
@@ -55,6 +55,7 @@
 
 <script>
 import { ADD_PORDUCT_TO_CART } from "./mutations-types";
+import { mapActions } from 'vuex'
     export default {
         props: {
             productId: {
@@ -87,6 +88,9 @@ import { ADD_PORDUCT_TO_CART } from "./mutations-types";
             next();
         },
         methods: {
+            ...mapActions([
+                ADD_PORDUCT_TO_CART
+            ]),
             getProduct(productId) {
                 return this.$http.get('products/{productId}', {
                     params: {
@@ -105,13 +109,6 @@ import { ADD_PORDUCT_TO_CART } from "./mutations-types";
             },
             deleteReview(review) {
                 // TODO: Implement
-            },
-             [ADD_PORDUCT_TO_CART](product, quantity) {
-                // TODO: Implement
-                this.$store.dispatch(ADD_PORDUCT_TO_CART, {
-                    product: this.product,
-                    quantity: 1
-                })
             }
         }
     }
